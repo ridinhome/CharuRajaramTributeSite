@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In Loving Memory - Charu Rajaram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #e8f4f8 100%);
+            min-height: 100vh;
+            color: #5a5a5a;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ffd6e8 0%, #c9e4f0 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            color: #8b5a8b;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+
+        header p {
+            color: #7a7a7a;
+            font-style: italic;
+        }
+
+        nav {
+            background: #fff0f5;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        nav button {
+            background: #d4a5d4;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            margin: 0 0.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: #b88bb8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        nav button.active {
+            background: #8b5a8b;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .about-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .about-section h2 {
+            color: #8b5a8b;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+
+        .about-section p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .photo-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #e8d5e8 0%, #d5e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        .photo-info {
+            padding: 1rem;
+        }
+
+        .photo-info h3 {
+            color: #8b5a8b;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .photo-info p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 15px;
+            margin: 2rem;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #ffd6e8 0%, #c9e4f0 100%);
+            padding: 2rem;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .modal-header h2 {
+            color: #8b5a8b;
+            margin-bottom: 0.5rem;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #8b5a8b;
+            line-height: 1;
+        }
+
+        .modal-photo {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #e8d5e8 0%, #d5e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        .comments-section {
+            padding: 2rem;
+        }
+
+        .comment {
+            background: #fff0f5;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #d4a5d4;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #8b5a8b;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .comment-form {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #fafafa;
+            border-radius: 10px;
+        }
+
+        .comment-form h3 {
+            color: #8b5a8b;
+            margin-bottom: 1rem;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .comment-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .comment-form button {
+            background: #d4a5d4;
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .comment-form button:hover {
+            background: #b88bb8;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>In Loving Memory</h1>
+        <p>A celebration of a beautiful life</p>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" data-page="about">About</button>
+        <button class="nav-btn" data-page="photos">Photo Gallery</button>
+    </nav>
+
+    <div class="container">
+        <div id="about" class="page active">
+            <div class="about-section">
+                <h2>Charu Rajaram</h2>
+                <p style="font-style: italic; color: #8b5a8b; margin-bottom: 1.5rem;">née Vakil</p>
+                <p>
+                    Charu Rajaram was the loving wife of Vikram Rajaram, and adored mother of Virat Rajaram and Kayam Rajaram. A proud Gujarati and Bombayite (she never said Mumbai), she was born in Bombay in 1947 at the Lying-in Hospital opposite the Babulnath Temple in Malabar Hill in Bombay, to Kantilal Manchashankar Vakil (KM Vakil) and Vasantilal Vakil.
+                </p>
+                <p>
+                    Her parents were leaders of the community. Her father was a judge and her mother was a doctor, a rarity at the time for a woman. She was the younger sister of her beloved brother, Suvarna Vakil.
+                </p>
+                <p>
+                    Charu by her own account had a wonderful childhood. She was mischievous, as you can see from her cheeky smile and the sparkle in her eye.
+                </p>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <img src="images/photos/aboutpage/CharuChild.jpg" alt="Young Charu" style="max-width: 400px; width: 100%; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </div>
+
+        <div id="photos" class="page">
+            <div class="photo-grid" id="photoGrid">
+                <!-- Photos will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <div id="photoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-btn">&times;</span>
+                <h2 id="modalTitle"></h2>
+                <p id="modalDescription"></p>
+            </div>
+            <div class="modal-photo" id="modalPhoto">
+                [Photo will appear here]
+            </div>
+            <div class="comments-section">
+                <h3>Memories & Comments</h3>
+                <div id="commentsContainer"></div>
+                
+                <div class="comment-form">
+                    <h3>Share a Memory</h3>
+                    <input type="text" id="commentName" placeholder="Your Name">
+                    <textarea id="commentText" placeholder="Share your thoughts, memories, or condolences..."></textarea>
+                    <button onclick="addComment()">Post Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample photos data
+        const photos = [
+            { id: 1, title: "Family Gathering", description: "Summer 2020", comments: [] },
+            { id: 2, title: "Garden Days", description: "She loved her roses", comments: [] },
+            { id: 3, title: "Holiday Celebration", description: "Christmas 2019", comments: [] },
+            { id: 4, title: "Special Moments", description: "Birthday celebration", comments: [] }
+        ];
+
+        let currentPhotoId = null;
+
+        // Navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.page).classList.add('active');
+            });
+        });
+
+        // Render photos
+        function renderPhotos() {
+            const grid = document.getElementById('photoGrid');
+            grid.innerHTML = photos.map(photo => `
+                <div class="photo-card" onclick="openPhoto(${photo.id})">
+                    <div class="photo-placeholder">[Add Photo: ${photo.title}]</div>
+                    <div class="photo-info">
+                        <h3>${photo.title}</h3>
+                        <p>${photo.description}</p>
+                        <p style="color: #d4a5d4; margin-top: 0.5rem;">${photo.comments.length} comments</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open photo modal
+        function openPhoto(id) {
+            currentPhotoId = id;
+            const photo = photos.find(p => p.id === id);
+            document.getElementById('modalTitle').textContent = photo.title;
+            document.getElementById('modalDescription').textContent = photo.description;
+            renderComments();
+            document.getElementById('photoModal').classList.add('active');
+        }
+
+        // Close modal
+        document.querySelector('.close-btn').addEventListener('click', () => {
+            document.getElementById('photoModal').classList.remove('active');
+        });
+
+        // Render comments
+        function renderComments() {
+            const photo = photos.find(p => p.id === currentPhotoId);
+            const container = document.getElementById('commentsContainer');
+            
+            if (photo.comments.length === 0) {
+                container.innerHTML = '<p style="color: #999; font-style: italic;">No comments yet. Be the first to share a memory.</p>';
+            } else {
+                container.innerHTML = photo.comments.map(comment => `
+                    <div class="comment">
+                        <div class="comment-author">${comment.name}</div>
+                        <div class="comment-date">${comment.date}</div>
+                        <p>${comment.text}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Add comment
+        function addComment() {
+            const name = document.getElementById('commentName').value;
+            const text = document.getElementById('commentText').value;
+            
+            if (!name || !text) {
+                alert('Please fill in both your name and comment.');
+                return;
+            }
+            
+            const photo = photos.find(p => p.id === currentPhotoId);
+            const date = new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            photo.comments.push({ name, text, date });
+            
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentText').value = '';
+            
+            renderComments();
+            renderPhotos();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('photoModal').addEventListener('click', (e) => {
+            if (e.target.id === 'photoModal') {
+                document.getElementById('photoModal').classList.remove('active');
+            }
+        });
+
+        // Initial render
+        renderPhotos();
+    </script>
+</body>
+</html>
